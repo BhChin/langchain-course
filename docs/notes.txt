@@ -1,0 +1,47 @@
+document processing pipeline for RAG
+---------------------------------------
+
+document loaders: extract text from raw files, handle different formats
+
+text splitters: split into chunks of 500-1000 chars, preserve sentence boundaries, add overlap( 100-200 chars)
+    context in text is important when splitting because we could split it in a weird way which if we give it to AI
+    it may misinterpret it which is why we add overlap
+
+    chunking is the MOST important part of RAG and can make or break it
+    we must be strategic on how to chunk our documents
+
+    four chunking variables that affect quality:
+        1. chunk size (sweet spot: 200-1000 tokens)
+        2. overlap (preserves context)
+        3. split boundaries
+            fixed, recursive (cut at paragraphs/sentences), semantic (cut at meaning), late (embed first, chunk later)
+        4. content type (each needs specific treatment)
+
+embedding generation: convert each chunk to a vector
+
+vector storage
+
+queries
+
+
+recursive chunking:
+    80% of product rag uses this
+    split by "\n\n" = paragraphs
+    split by "\n" = lines
+    etc
+    keep going down if the chunks are too big
+
+Traditional Chunking vs Late Chunking:
+    - traditional chunking loses cross-chunk context
+    - late chunking is more accurate because the chunks know about each other
+
+-----------------------------------------------------------------------------------
+RAG PIPELINE:
+
+phase 1: indexing
+    load documents, chunking, embeddings, vector db
+
+phase 2: querying
+    embed question, search db, retrieve docs, llm, answer
+
+must use same embedding model for embedding document and question
