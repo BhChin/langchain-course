@@ -45,3 +45,24 @@ phase 2: querying
     embed question, search db, retrieve docs, llm, answer
 
 must use same embedding model for embedding document and question
+
+
+---------------------------------------------------------------------------------------
+Hybrid search
+
+vector searching sucks at codes, acronyms, and stuff like that. If you got a query like "SKV_1239123 Shoes",
+it won't care bout the code cause it had no semantic meaning but will search stuff about shoes in general
+
+bm25 search is good at finding codes, acronyms, etc but sucks at semantic meaning
+
+hybrid search combines the two
+
+pipeline:
+query goes into both a vector search and a bm25 search
+compares its found documents, ranking them, and them comparing their results through "reciprocal rank fusion" RRF score = 1(k + rank)
+then we get the final results
+
+documents good in both rise to the top
+
+hybrid should be used when data has codes/ids, legal documents, mixed query types, and where accuracy is critical
+
